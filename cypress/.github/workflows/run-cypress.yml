@@ -1,0 +1,25 @@
+name: Run Cypress Tests Daily
+
+on:
+  schedule:
+    # تشغيل كل يوم الساعة 7 صباحًا بتوقيت UTC (اللي يعادل 10 صباحًا بتوقيت الأردن الصيفي UTC+3)
+    - cron: '0 7 * * *'
+
+jobs:
+  cypress-run:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '16'
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Run Cypress tests
+        run: npx cypress run --spec "cypress/qualifiedcrew/firsproject/SCEvryday.js,cypress/qualifiedcrew/firsproject/SRED.js"
