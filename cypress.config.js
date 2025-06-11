@@ -7,4 +7,12 @@ module.exports = defineConfig({
     },
     specPattern:'./cypress/qualifiedcrew/firsproject/*.js'
   },
+   
+  reporter: 'mochawesome',
+  reporterOptions: {
+    reportDir: 'C:/Users/lenovo/OneDrive/Desktop/New folder (2)/report',
+    overwrite: true,
+    html: true,
+    json: true
+  }
 });
