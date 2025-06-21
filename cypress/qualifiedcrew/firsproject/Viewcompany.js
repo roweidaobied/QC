@@ -1,4 +1,4 @@
-describe("User Recruiter and Login", () => {
+describe("Company View Page", () => {
 
     it("Recruiter", () => {
         cy.visit('https://www.qualifiedcrew.com/');

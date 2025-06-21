@@ -129,7 +129,7 @@
   });
 
 });*/
-describe('Automated Recruiter SignUp with Slack Notification', () => {
+/*describe('Automated Recruiter SignUp with Slack Notification', () => {
 
   const slackWebhookUrl = 'https://hooks.slack.com/services/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';
 
@@ -170,14 +170,61 @@ describe('Automated Recruiter SignUp with Slack Notification', () => {
     cy.wait(6000);
 
     // Step 4: Check if signup success by checking URL
-    cy.url().then((url) => {
+  cy.url().then((url) => {
+  const now = new Date().toLocaleString();
+  if (url.includes('/auth/register/verify-code')) {
+    sendSlackMessage(`✅ Recruiter Sign Up SUCCESS for ${email} at ${now}`);
+  } else {
+    sendSlackMessage(`❌ Recruiter Sign Up FAILED for ${email} at ${now}`);
+    throw new Error('Recruiter Sign Up failed – not redirected to verify code page');
+  }
+});
+  });
+
+});*/
+
+
+describe('Automated Recruiter SignUp with Slack Notification', () => {
+
+  const slackWebhookUrl = 'https://hooks.slack.com/services/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';
+
+  const timestamp = Date.now();
+  const email = `test${timestamp}@gmail.com`;
+  const password = 'Admin@123';
+  const fullName = 'Test Automation';
+
+  function sendSlackMessage(message) {
+    cy.request({
+      method: 'POST',
+      url: slackWebhookUrl,
+      body: { text: message },
+      headers: { 'Content-Type': 'application/json' },
+      failOnStatusCode: false
+    });
+  }
+
+  beforeEach(() => {
+    cy.viewport(1280, 720);
+  });
+
+  it('Sign Up as Recruiter and Notify Slack', () => {
+    cy.visit('https://www.qualifiedcrew.com/register/account-type');
+
+    // Step 1: Choose recruiter account type
+    cy.get('.css-grry9j:nth-child(2) .css-h1jf7p').click();
+
+    // Step 2: Fill the registration form
+    cy.get('input[name="name"]').type(fullName, { delay: 50 });
+    cy.get('input[name="email"]').type(email, { delay: 50 });
+    cy.get('input[name="password"]').type(password, { delay: 50 });
+    cy.get('input[name="policy"]').click();
+    cy.get('button[type="submit"]').click();
+
+    // Step 3: Wait for redirection to /verify-code
+    cy.url({ timeout: 10000 }).should('include', '/verify-code').then((url) => {
       const now = new Date().toLocaleString();
-      if (url.includes('/dashboard')) {
-        sendSlackMessage(`✅ Recruiter Sign Up SUCCESS for ${email} at ${now}`);
-      } else {
-        sendSlackMessage(`❌ Recruiter Sign Up FAILED for ${email} at ${now}`);
-        throw new Error('Recruiter Sign Up failed – not redirected to dashboard');
-      }
+      sendSlackMessage(`✅ Recruiter Sign Up SUCCESS for ${email} at ${now}`);
+      
     });
   });
 

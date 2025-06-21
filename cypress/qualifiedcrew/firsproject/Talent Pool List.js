@@ -20,12 +20,10 @@ describe("User Recruiter and Login", () => {
       
           
         
-    cy.contains('span', 'Jobs').click({ force: true });
+     cy.contains('span', 'Talent Pool').click({ force: true });
      cy.wait(500)
-     cy.visit('https://www.qualifiedcrew.com/dashboard/jobs');
-      
+     cy.visit('https://www.qualifiedcrew.com/dashboard/talent-pool');
 
-      
             
     });
 });
